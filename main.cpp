@@ -1,70 +1,11 @@
 #include <iostream>
-#include <map>
-#include <string>
-#include <cctype>
+#include <sstream>
+#include "parser.h"
+#include "lexer.h"
+#include "error.h"
+#include "table.h"
 
-using namespace std;
-
-double expr(bool);
-double term(bool);
-double prim(bool);
-double error(const string&);
-
-int no_of_errors;
-
-map<string,double> table;
-
-
-enum class Kind : char { name, number, end,
-    plus='+',
-    minus='-',
-    mul='*',
-    div='/',
-    print=';',
-    assign='=',
-    lp='(',
-    rp=')'
-};
-
-struct Token { Kind kind;
-    string string_value;
-    double number_value;
-};
-
-
-class Token_stream {
-public:
-    Token_stream(istream &s) : ip{&s}, owns{false} {}
-
-    Token_stream(istream* p) : ip{ p }, owns{ true } {}
-    ̃
-
-    Token_stream() { close(); }
-
-    Token get(); // read and return next token
-    Token &current(); // most recently read token
-    void set_input(istream &s) {
-        close();
-        ip = &s;
-        owns = false;
-    }
-
-    void set_input(istream* p) {
-        close();
-        ip = p;
-        owns = true;
-    }
-private:
-    void close() {
-        if (owns)
-            delete ip;
-    }
-
-    istream* ip;
-    bool owns;
-    Token ct{Kind::end};
-};
-
+using Table::table;
 
 double expr(bool get)
 {
@@ -213,6 +154,7 @@ Token Token_stream::get() {
 }
 
 Token_stream ts{cin};
+
 void calculate(){
     while (true){
         ts.get();
@@ -224,13 +166,16 @@ void calculate(){
     }
 }
 
+namespace Driver{
+    void calculate() {}
+}
+
 int main() {
 
-    table["pi"]=3.1415926535897932385;
-    table["e"]=2.7182818284590452354;
+    Table["pi"]=3.1415926535897932385;
+    Table["e"]=2.7182818284590452354;
     calculate();
 
     return no_of_errors;
 
-    return 0;
 }
