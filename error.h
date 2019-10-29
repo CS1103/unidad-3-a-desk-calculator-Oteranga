@@ -8,8 +8,8 @@
 #include <string>
 
 namespace Error{
-    int Error::number_of_errors;
-    double Error::error(const std::string&);
+    int no_of_errors;
+    double error(const std::string&);
 }
 
 #endif //DESKCALCULATOR_ERROR_H
