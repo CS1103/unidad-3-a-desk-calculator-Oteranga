@@ -9,11 +9,7 @@
 #include <iostream>
 using namespace std;
 
-int no_of_errors;
-double error(const string& error) {
-    no_of_errors++;
-    cerr<<"Error: "<<error<<endl;
-    return 1;
-}
+extern int no_of_errors;
+double error(const string& error);
 
 #endif //DESKCALCULATOR_ERROR_H
