@@ -23,10 +23,12 @@ namespace Lexer{
     };
 
     class Token{
+    public:
         Kind kind;
-        std::string string_value;
+        string string_value;
         double number_value;
     };
+
     class Token_stream{
     public:
         Token_stream(istream &s) : ip{&s}, owns{false} {}
@@ -35,29 +37,23 @@ namespace Lexer{
 
         Token_stream() { close(); }
 
-        Token get(); // read and return next token
-        Token& current(); // most recently read token
-        void set_input(istream &s) {
-            close();
-            ip = &s;
-            owns = false;
-        }
+        Token get();
+        Token& current();
 
-        void set_input(istream* p) {
-            close();
-            ip = p;
-            owns = true;
-        }
+        void set_input(istream &);
+        void set_input(istream*);
+
     private:
         void close() {
             if (owns)
                 delete ip;
         }
-
         istream* ip;
         bool owns;
         Token ct{Kind::end};
     };
 }
+
+extern Lexer::Token_stream ts;
 
 #endif //DESKCALCULATOR_LEXER_H

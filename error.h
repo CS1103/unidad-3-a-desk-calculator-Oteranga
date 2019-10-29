@@ -6,10 +6,14 @@
 #define DESKCALCULATOR_ERROR_H
 
 #include <string>
+#include <iostream>
+using namespace std;
 
-namespace Error{
-    int no_of_errors;
-    double error(const std::string&);
+int no_of_errors;
+double error(const string& error) {
+    no_of_errors++;
+    cerr<<"Error: "<<error<<endl;
+    return 1;
 }
 
 #endif //DESKCALCULATOR_ERROR_H

@@ -6,9 +6,11 @@
 #include "error.h"
 #include <cctype>
 #include <iostream>
+using namespace std;
 
 namespace Lexer{
     extern Token_stream ts;
+
     Token Token_stream::get() {
         char ch = 0;
         *ip>>ch;
@@ -25,7 +27,16 @@ namespace Lexer{
             case ')':
             case '=':
                 return ct = {static_cast<Kind>(ch)};
-            case '0': case '1': case '2': case '3': case '4': case '5': case '6': case '7': case '8': case '9':
+            case '0':
+            case '1':
+            case '2':
+            case '3':
+            case '4':
+            case '5':
+            case '6':
+            case '7':
+            case '8':
+            case '9':
             case '.':
                 ip -> putback(ch); // put the first digit (or .) back into the input stream
                 *ip  >>  ct.number_value; // read number into ct
@@ -38,11 +49,23 @@ namespace Lexer{
                     ct.kind=Kind::name;
                     return ct;
                 }
-                Error::error("bad token");
+                error("bad token");
                 return ct={Kind::print};
         }
     }
     Token& Token_stream::current() {
         return ct;
+    }
+
+    void Token_stream::set_input(istream &s) {
+        close();
+        ip = &s;
+        owns = false;
+    }
+
+    void Token_stream::set_input(istream* p) {
+        close();
+        ip = p;
+        owns = true;
     }
 }
